@@ -8,7 +8,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "style-fix": "npx prettier --write ./src/\"**/*.{ts,js,vue}\"",
-		"style-check": "npx prettier ./src/\"**/*.{ts,js,vue}\" --check"
+    "style-check": "npx prettier ./src/\"**/*.{ts,js,vue}\" --check"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
@@ -23,12 +23,13 @@
   "devDependencies": {
     "@types/node": "^22.5.5",
     "@vitejs/plugin-vue": "^5.1.2",
+    "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
+    "prettier": "3.2.4",
     "tailwindcss": "^3.4.12",
     "typescript": "^5.5.3",
     "vite": "^5.4.1",
-    "vue-tsc": "^2.0.29",
-    "prettier": "3.2.4"
+    "vue-tsc": "^2.0.29"
   }
 }
