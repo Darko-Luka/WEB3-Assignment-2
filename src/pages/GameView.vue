@@ -1,9 +1,12 @@
 <template>
 	<div class="w-full h-[720px] flex flex-col justify-between table-image">
-		<div class="flex items-center justify-between w-1/2 mx-auto p-6">
-			<OpponentAvatar :isActive="true" name="Bot 1" />
-			<OpponentAvatar :isActive="false" name="Bot 2" />
-			<OpponentAvatar :isActive="false" name="Bot 3" />
+		<div class="flex justify-between items-center">
+			<Label class="text-white text-xl absolute pl-20">Target: 500</Label>
+			<div class="flex items-center justify-between w-1/2 mx-auto p-6">
+				<OpponentAvatar :isActive="true" name="Bot 1" />
+				<OpponentAvatar :isActive="false" name="Bot 2" />
+				<OpponentAvatar :isActive="false" name="Bot 3" />
+			</div>
 		</div>
 
 		<div class="flex flex-row gap-64 justify-center">
@@ -24,17 +27,7 @@
 		</div>
 
 		<div class="flex items-center justify-center space-x-2">
-			<PlayerDeck
-				:cards="[
-					{ type: 'Wild' },
-					{ type: 'Wild' },
-					{ type: 'Wild' },
-					{ type: 'Wild' },
-					{ type: 'Wild' },
-					{ type: 'Wild' },
-					{ type: 'Wild' },
-				]"
-			/>
+			<PlayerDeck :cards="[{ type: 'Wild' }]" />
 			<Label class="text-white text-xl">Score: 450 </Label>
 		</div>
 	</div>

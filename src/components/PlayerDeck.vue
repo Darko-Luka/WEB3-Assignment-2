@@ -6,6 +6,7 @@
 		>
 			<CardComponent :card="card" />
 		</li>
+		<Button size="lg" class="first:ml-auto last:mr-auto" v-if="cards.length === 1">Say Uno!</Button>
 	</ol>
 </template>
 
@@ -13,6 +14,7 @@
 import type { Card } from "@/lib/utils";
 import { defineProps } from "vue";
 import CardComponent from "./CardComponent.vue";
+import Button from "./ui/button/Button.vue";
 
 const props = defineProps<{
 	cards: Array<Card>;
