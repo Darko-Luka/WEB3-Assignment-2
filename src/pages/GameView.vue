@@ -1,7 +1,7 @@
 <template>
 	<div class="w-full h-[720px] flex flex-col justify-between table-image">
 		<div class="flex justify-between items-center">
-			<Label class="text-white text-xl absolute pl-20">Target: 500</Label>
+			<ScoreTarget :targetScore="500" />
 			<div class="flex items-center justify-between w-1/2 mx-auto p-6">
 				<OpponentAvatar :isActive="true" name="Bot 1" />
 				<OpponentAvatar :isActive="false" name="Bot 2" />
@@ -10,33 +10,24 @@
 		</div>
 
 		<div class="flex flex-row gap-64 justify-center">
-			<div>
-				<h1 class="ml-4 mb-2 text-white text-xl">Draw Pile</h1>
-				<img
-					class="max-w-32 cursor-pointer hover:scale-105 hover:-translate-y-2 transition-all ease-in"
-					src="../assets/cards/Deck.png"
-				/>
-			</div>
-
-			<div>
-				<h1 class="ml-2 mb-2 text-white text-xl">Discard Pile</h1>
-				<div
-					class="min-w-32 max-w-32 bg-gray-400 h-[185.39px] rounded-lg cursor-pointer hover:scale-105 hover:-translate-y-2 transition-all ease-in"
-				></div>
-			</div>
+			<DrawPile />
+			<DiscardPile />
 		</div>
 
 		<div class="flex items-center justify-center space-x-2">
 			<PlayerDeck :cards="[{ type: 'Wild' }]" />
-			<Label class="text-white text-xl">Score: 450 </Label>
+			<Score :score="450" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import DiscardPile from "@/components/DiscardPile.vue";
+import DrawPile from "@/components/DrawPile.vue";
 import OpponentAvatar from "@/components/OpponentAvatar.vue";
 import PlayerDeck from "@/components/PlayerDeck.vue";
-import Label from "@/components/ui/label/Label.vue";
+import Score from "@/components/Score.vue";
+import ScoreTarget from "@/components/ScoreTarget.vue";
 </script>
 
 <style scoped>

@@ -3,7 +3,7 @@
 		<div :class="getClass()">
 			<Label class="text-black text-2xl">{{ name }}</Label>
 		</div>
-		<Label class="text-white text-lg">250</Label>
+		<Score :score="250" />
 	</div>
 </template>
 
@@ -11,6 +11,7 @@
 import { cn } from "@/lib/utils";
 import Label from "./ui/label/Label.vue";
 import { defineProps } from "vue";
+import Score from "./Score.vue";
 
 const props = defineProps<{
 	isActive: boolean;
