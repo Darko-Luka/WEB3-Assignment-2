@@ -1,6 +1,6 @@
 <template>
 	<div class="flex items-end space-x-4">
-		<NumberField :min="1" :max="3" v-model:model-value="val">
+		<NumberField :min="1" :max="3" v-model:model-value="botsCount">
 			<Label>Number of players (Bots)</Label>
 			<NumberFieldContent>
 				<NumberFieldDecrement />
@@ -11,7 +11,7 @@
 	</div>
 
 	<ul class="space-y-2 mt-12">
-		<li v-for="(_, index) in new Array(val)">
+		<li v-for="(_, index) in new Array(botsCount)">
 			<div class="flex items-center space-x-4">
 				<p>Bot({{ index + 1 }})</p>
 				<Select v-model:model-value="difficulty[index]">
@@ -31,9 +31,7 @@
 		</li>
 	</ul>
 
-	<Button class="mt-12">
-		<RouterLink to="/game"> Play </RouterLink>
-	</Button>
+	<Button class="mt-12" @click="() => createGame()"> Play </Button>
 </template>
 
 <script setup lang="ts">
@@ -56,9 +54,18 @@ import {
 } from "@/components/ui/number-field";
 import { Label } from "@/components/ui/label";
 import { ref } from "vue";
-import { RouterLink } from "vue-router";
 import { Button } from "@/components/ui/button";
+import { useGameStore } from "@/stores/GameStore";
+import { useRouter } from "vue-router";
 
-const val = ref(1);
-const difficulty = ref(["medium", "medium", "medium"]);
+const botsCount = ref(1);
+const difficulty = ref<("easy" | "medium" | "hard")[]>(["medium", "medium", "medium"]);
+const store = useGameStore();
+const router = useRouter();
+
+function createGame() {
+	store.createGame(difficulty.value.slice(0, botsCount.value));
+
+	router.push("/game");
+}
 </script>

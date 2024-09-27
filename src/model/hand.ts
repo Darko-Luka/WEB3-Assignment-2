@@ -285,7 +285,7 @@ export class Hand {
 		}
 	}
 
-	private nextPlayer() {
+	nextPlayer() {
 		this._playerInTurn = this.nextPlayerIndex();
 	}
 

@@ -3,7 +3,10 @@
 		<div :class="getClass()">
 			<Label class="text-black text-2xl">{{ name }}</Label>
 		</div>
-		<Score :score="250" />
+		<div class="flex flex-col pl-2 space-y-2">
+			<Score :score="store.getPlayerScore(id)" />
+			<Label class="text-white">{{ cards.length }} cards</Label>
+		</div>
 	</div>
 </template>
 
@@ -12,10 +15,16 @@ import { cn } from "@/lib/utils";
 import Label from "./ui/label/Label.vue";
 import { defineProps } from "vue";
 import Score from "./Score.vue";
+import { useGameStore } from "@/stores/GameStore";
+import type { Card } from "@/model/deck";
+
+const store = useGameStore();
 
 const props = defineProps<{
+	cards: Array<Card>;
 	isActive: boolean;
 	name: string;
+	id: number;
 }>();
 
 function getClass() {

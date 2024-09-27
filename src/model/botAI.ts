@@ -35,7 +35,8 @@ function chooseRandomCard(playableCards: PlayableCard[]): CardToPlay {
 	const randomIndex = Math.floor(Math.random() * playableCards.length);
 	const cardToPlay = playableCards[randomIndex];
 
-	checkIfWildCardAndReturn(cardToPlay);
+	const wildCard = checkIfWildCard(cardToPlay);
+	if (wildCard) return wildCard;
 
 	return { cardIndex: cardToPlay.index };
 }
@@ -46,7 +47,8 @@ function prioritizeSpecialCards(playableCards: PlayableCard[]): CardToPlay {
 		return specialCardPriority || Math.random() - 0.5;
 	})[0];
 
-	checkIfWildCardAndReturn(cardToPlay);
+	const wildCard = checkIfWildCard(cardToPlay);
+	if (wildCard) return wildCard;
 
 	return { cardIndex: cardToPlay.index };
 }
@@ -55,7 +57,8 @@ function playStrategically(playableCards: PlayableCard[], topCard: Card, playerD
 	// 1. If close to winning, play cards that minimize hand size
 	if (playerDeck.length <= 3) {
 		const cardToPlay = prioritizeLowValueCards(playableCards);
-		checkIfWildCardAndReturn(cardToPlay);
+		const wildCard = checkIfWildCard(cardToPlay);
+		if (wildCard) return wildCard;
 		return { cardIndex: cardToPlay.index };
 	}
 
@@ -75,7 +78,8 @@ function playStrategically(playableCards: PlayableCard[], topCard: Card, playerD
 	const nonWildCards = playableCards.filter((card) => !(card.card.type === "WILD" || card.card.type === "WILD DRAW"));
 	if (nonWildCards.length > 0) {
 		const cardToPlay = prioritizeLowValueCards(nonWildCards);
-		checkIfWildCardAndReturn(cardToPlay);
+		const wildCard = checkIfWildCard(cardToPlay);
+		if (wildCard) return wildCard;
 		return { cardIndex: cardToPlay.index };
 	}
 
@@ -97,10 +101,12 @@ function getRandomColor(): CardColor {
 	return colors[Math.floor(Math.random() * colors.length)];
 }
 
-function checkIfWildCardAndReturn(cardToPlay: PlayableCard): CardToPlay | void {
+function checkIfWildCard(cardToPlay: PlayableCard): CardToPlay | null {
 	if (cardToPlay && (cardToPlay.card.type === "WILD" || cardToPlay.card.type === "WILD DRAW")) {
 		return { cardIndex: cardToPlay.index, nextColor: getRandomColor() };
 	}
+
+	return null;
 }
 
 function getPlayableCards(hand: Hand): PlayableCard[] {

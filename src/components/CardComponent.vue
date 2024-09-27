@@ -3,8 +3,8 @@
 </template>
 
 <script setup lang="ts">
+import type { Card } from "@/model/deck";
 import { defineProps } from "vue";
-import type { Card } from "@/lib/utils";
 
 const props = defineProps<{
 	card: Card;
@@ -15,11 +15,24 @@ function getImgUrl() {
 }
 
 function getCardName() {
-	if (props.card.type === "Wild" || props.card.type === "Wild_Draw" || props.card.type === "Deck")
-		return props.card.type;
+	const typeMapping: Record<string, string> = {
+		DECK: "Deck",
+		WILD: "Wild",
+		"WILD DRAW": "Wild_Draw",
+		SKIP: "Skip",
+		REVERSE: "Reverse",
+		DRAW: "Draw",
+	};
 
-	if (props.card.type === "Skip" || props.card.type === "Reverse" || props.card.type === "Draw")
-		return `${props.card.color}_${props.card.type}`;
+	const formattedType = typeMapping[props.card.type] || props.card.type;
+
+	if (formattedType === "Wild" || formattedType === "Wild_Draw" || formattedType === "Deck") {
+		return formattedType;
+	}
+
+	if (formattedType === "Skip" || formattedType === "Reverse" || formattedType === "Draw") {
+		return `${props.card.color}_${formattedType}`;
+	}
 
 	return `${props.card.color}_${props.card.number}`;
 }

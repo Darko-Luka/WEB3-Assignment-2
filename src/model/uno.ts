@@ -90,7 +90,7 @@ export class Game {
 	}
 }
 
-export function createGame(createGame: Partial<Props>): Game {
+export function createUnoGame(createGame: Partial<Props>): Game {
 	const game = new Game(createGame);
 	return game;
 }

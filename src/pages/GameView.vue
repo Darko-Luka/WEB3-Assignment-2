@@ -3,20 +3,25 @@
 		<div class="flex justify-between items-center">
 			<ScoreTarget :targetScore="500" />
 			<div class="flex items-center justify-between w-1/2 mx-auto p-6">
-				<OpponentAvatar :isActive="true" name="Bot 1" />
-				<OpponentAvatar :isActive="false" name="Bot 2" />
-				<OpponentAvatar :isActive="false" name="Bot 3" />
+				<OpponentAvatar
+					v-for="bot in store.bots"
+					:cards="store.players[bot.index].deck"
+					:key="bot.index"
+					:isActive="store.isPlayerInTurn(bot.index)"
+					:name="bot.name"
+					:id="bot.index"
+				/>
 			</div>
 		</div>
 
 		<div class="flex flex-row gap-64 justify-center">
-			<DrawPile />
+			<DrawPile :isActive="store.isPlayerInTurn(playerIndex)" />
 			<DiscardPile />
 		</div>
 
 		<div class="flex items-center justify-center space-x-2">
-			<PlayerDeck :cards="[{ type: 'Wild' }]" />
-			<Score :score="450" />
+			<PlayerDeck :cards="store.players[playerIndex].deck" :isActive="store.isPlayerInTurn(playerIndex)" />
+			<Score :score="store.getPlayerScore(playerIndex)" />
 		</div>
 	</div>
 </template>
@@ -28,6 +33,12 @@ import OpponentAvatar from "@/components/OpponentAvatar.vue";
 import PlayerDeck from "@/components/PlayerDeck.vue";
 import Score from "@/components/Score.vue";
 import ScoreTarget from "@/components/ScoreTarget.vue";
+import { useGameStore } from "@/stores/GameStore";
+
+const store = useGameStore();
+
+// We are always assuming the player (you), is index 0
+const playerIndex = 0;
 </script>
 
 <style scoped>
