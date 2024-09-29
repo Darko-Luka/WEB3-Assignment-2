@@ -185,6 +185,13 @@ export class Hand {
 			this.playerUnos[playerIndex] = true;
 	}
 
+	wasPenalized(playerIndex: number): boolean {
+		const playerHand = this.playerHands[playerIndex];
+		const hasSaidUno = this.playerUnos[playerIndex];
+
+		return playerHand.length > 1 && !hasSaidUno;
+	}
+
 	catchUnoFailure(unoFailure: UnoFailure): boolean {
 		const accusedPlayer = this.playerHands[unoFailure.accused];
 		if (

@@ -1,7 +1,7 @@
 <template>
 	<div class="w-full h-[720px] flex flex-col justify-between table-image">
 		<div class="flex justify-between items-center">
-			<ScoreTarget :targetScore="500" />
+			<ScoreTarget :targetScore="store.getTargetScore()" />
 			<div class="flex items-center justify-between w-1/2 mx-auto p-6">
 				<OpponentAvatar
 					v-for="bot in store.bots"
@@ -34,11 +34,20 @@ import PlayerDeck from "@/components/PlayerDeck.vue";
 import Score from "@/components/Score.vue";
 import ScoreTarget from "@/components/ScoreTarget.vue";
 import { useGameStore } from "@/stores/GameStore";
+import { useRouter } from "vue-router";
 
 const store = useGameStore();
+const router = useRouter();
 
 // We are always assuming the player (you), is index 0
 const playerIndex = 0;
+
+try {
+	store.players[playerIndex].deck;
+} catch {
+	// check if the game was initialized properly, if no go back to the home view
+	router.push("/").then(() => location.reload());
+}
 </script>
 
 <style scoped>

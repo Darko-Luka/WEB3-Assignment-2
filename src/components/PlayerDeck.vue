@@ -3,7 +3,13 @@
 		<li :class="getCardClasses()" v-for="(card, index) in cards">
 			<CardComponent :card="card" @click="play(index, card.type)" />
 		</li>
-		<Button size="lg" class="first:ml-auto last:mr-auto" v-if="cards.length === 1">Say Uno!</Button>
+		<Button
+			size="lg"
+			class="first:ml-auto last:mr-auto"
+			@click="() => store.sayUno(playerIndex)"
+			v-if="cards.length === 1"
+			>Say Uno!</Button
+		>
 	</ol>
 </template>
 
@@ -49,4 +55,7 @@ const props = defineProps<{
 	cards: Array<Card>;
 	isActive: boolean;
 }>();
+
+// We are always assuming the player (you), is index 0
+const playerIndex = 0;
 </script>

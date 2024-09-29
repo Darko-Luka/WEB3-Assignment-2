@@ -19,5 +19,5 @@ export interface EngineInterface {
 	draw(): void;
 	sayUno(index: number): void;
 	catchUnoFailure(unoFailure: UnoFailure): boolean;
-	getWinner(): number | undefined;
+	getTargetScore(): number;
 }

@@ -9,6 +9,7 @@ export class EngineService implements EngineInterface {
 	game: Game = createUnoGame({ players: ["a", "b"] });
 	discardPileTopCardRef = ref<Card | undefined>();
 	bots: ("easy" | "medium" | "hard")[] = [];
+	public onEnd: () => void = () => {};
 
 	createGame(bots: ("easy" | "medium" | "hard")[]): Array<Player> {
 		const players = Array.from({ length: bots.length + 1 }, (_, index) => {
@@ -18,6 +19,18 @@ export class EngineService implements EngineInterface {
 		this.bots = bots;
 
 		this.game = createUnoGame({ players, targetScore: 500, cardsPerPlayer: 7 });
+
+		this.game.onGameEnd = (winner: number) => {
+			Array.from({ length: this.game.hand?.playerCount ?? 0 }).forEach((_, index) => {
+				if (this.game.score(index) >= this.game.targetScore) {
+					alert(`${this.game.player(index)} has won the game!`);
+					this.onEnd();
+					return;
+				}
+			});
+
+			alert(`Round has ended, winner is ${this.game.player(winner)}!`);
+		};
 
 		this.discardPileTopCardRef.value = this.game.hand?.discardPile().top();
 		return players.map((player, index) => {
@@ -53,7 +66,6 @@ export class EngineService implements EngineInterface {
 		if (!hand) return;
 
 		const move = decideMove(hand, this.bots[(this.game.hand?.playerInTurn() ?? 0) - 1]);
-		console.log(this.bots[(this.game.hand?.playerInTurn() ?? 0) - 1]);
 
 		if (move === "draw") {
 			this.game.hand?.draw();
@@ -70,15 +82,15 @@ export class EngineService implements EngineInterface {
 	}
 
 	sayUno(index: number): void {
-		throw new Error("Method not implemented.");
+		this.game.hand?.sayUno(index);
 	}
 
 	catchUnoFailure(unoFailure: UnoFailure): boolean {
-		throw new Error("Method not implemented.");
+		return this.game.hand?.catchUnoFailure(unoFailure) ?? false;
 	}
 
-	getWinner(): number | undefined {
-		throw new Error("Method not implemented.");
+	getTargetScore(): number {
+		return this.game.targetScore;
 	}
 
 	get getDiscardPileTopCard(): Ref<Card | undefined, Card | undefined> {

@@ -19,5 +19,5 @@ export function createHand({ players, dealer, shuffler = standardShuffler, cards
 }
 
 export function createGame(props: Partial<uno.Props>): uno.Game {
-	return uno.createGame(props);
+	return uno.createUnoGame(props);
 }

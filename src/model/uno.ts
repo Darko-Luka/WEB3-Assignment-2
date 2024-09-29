@@ -15,6 +15,7 @@ export class Game {
 	targetScore: number;
 	props: Partial<Props>;
 	private playerScores: number[];
+	onGameEnd: (winner: number) => void = () => {};
 
 	constructor(createGame: Partial<Props>) {
 		this.props = createGame;
@@ -75,7 +76,10 @@ export class Game {
 
 		const winner = this.hand?.winner();
 		const score = this.hand?.score();
-		if (winner !== undefined && score !== undefined) this.playerScores[winner] += score;
+		if (winner !== undefined && score !== undefined) {
+			this.playerScores[winner] += score;
+			this.onGameEnd(winner);
+		}
 
 		this.hand = createHand(
 			this.props.players ?? ["A", "B"],

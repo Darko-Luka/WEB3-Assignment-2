@@ -1,8 +1,8 @@
 <template>
 	<div class="flex justify-center items-center flex-col">
-		<h1 class="text-4xl">Player X has won!</h1>
+		<h1 class="text-4xl">{{ winner }} has won!</h1>
 		<ol class="my-4 text-lg">
-			<li class="" v-for="player in players">
+			<li class="" v-for="player in players" :key="player.name">
 				<span class="font-bold">{{ player.name }}</span> - {{ player.score }}
 			</li>
 		</ol>
@@ -14,25 +14,29 @@
 
 <script setup lang="ts">
 import Button from "@/components/ui/button/Button.vue";
-import { ref } from "vue";
-import { RouterLink } from "vue-router";
+import { computed, ref } from "vue";
+import { RouterLink, useRoute } from "vue-router";
 
-const players = ref<Array<{ name: String; score: Number }>>([
-	{
-		name: "Sad boy",
-		score: 350,
-	},
-	{
-		name: "Sam u sobi",
-		score: 250,
-	},
-	{
-		name: "1 mil before 30",
-		score: 150,
-	},
-	{
-		name: "48 laws of power",
-		score: 50,
-	},
-]);
+const route = useRoute();
+const players = ref<Array<{ name: string; score: number }>>([]);
+
+for (const [name, score] of Object.entries(route.query)) {
+	if (typeof score === "string") {
+		players.value.push({
+			name,
+			score: parseInt(score, 10),
+		});
+	}
+}
+
+const winner = computed(() => {
+	if (players.value.length === 0) return "No one";
+
+	const topPlayer = players.value.reduce((prev, current) => {
+		return current.score > prev.score ? current : prev;
+	});
+	return topPlayer.name;
+});
+
+players.value.sort((a, b) => b.score - a.score);
 </script>

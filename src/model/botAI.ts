@@ -12,6 +12,8 @@ export function decideMove(hand: Hand, difficulty: Difficulty): "draw" | CardToP
 		return "draw";
 	}
 
+	handleUnoCall(hand, difficulty);
+
 	switch (difficulty) {
 		case "easy":
 			return chooseRandomCard(playableCards);
@@ -28,6 +30,43 @@ export function decideMove(hand: Hand, difficulty: Difficulty): "draw" | CardToP
 
 		default:
 			return "draw";
+	}
+}
+
+async function handleUnoCall(hand: Hand, difficulty: Difficulty) {
+	const playerInTurn = hand.playerInTurn();
+	if (!playerInTurn) return;
+
+	const playerDeck = hand.playerHand(playerInTurn);
+	if (playerDeck.length === 2) {
+		let sayUnoProbability = 0;
+		let delay = 0;
+
+		switch (difficulty) {
+			case "easy":
+				sayUnoProbability = 0.5; // 50% chance to say "Uno"
+				delay = Math.random() * 2000 + 2000; // 2 to 4 seconds delay
+				break;
+
+			case "medium":
+				sayUnoProbability = 0.8; // 80% chance to say "Uno"
+				delay = Math.random() * 1000 + 1000; // 1 to 2 seconds delay
+				break;
+
+			case "hard":
+				sayUnoProbability = 1.0; // Always says "Uno"
+				delay = Math.random() * 500 + 500; // 0.5 to 1 second delay
+				break;
+		}
+
+		// Determine whether the bot says "Uno"
+		if (Math.random() < sayUnoProbability) {
+			await new Promise((resolve) => setTimeout(resolve, delay));
+			if (!hand.wasPenalized(playerInTurn)) {
+				hand.sayUno(playerInTurn);
+				alert(`Bot ${playerInTurn} said uno`);
+			}
+		}
 	}
 }
 
